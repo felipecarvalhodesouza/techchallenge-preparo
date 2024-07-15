@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goodburguer-preparo-deployment
+  labels:
+    app: goodburguer-preparo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodburguer-preparo-app
+  template:
+    metadata:
+      labels:
+        app: goodburguer-preparo-app
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - arm64
+      containers:
+      - name: goodburguer-preparo
+        image: felipecarvalhodesouza/goodburguer-preparo:latest
+        resources:
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+            limits:
+              cpu: 2000m
+              memory: 2048Mi
+        ports:
+        - name: http
+          containerPort: 8080
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-db-preparo-config
+                key: DATABASE_URL
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mysql-db-preparo-secret
+                key: DATABASE_USERNAME
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-db-preparo-config
+                key: DATABASE_PASSWORD
