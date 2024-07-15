@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 
 import br.com.postech.preparo.application.usecases.PreparoPedidoInteractor;
 import br.com.postech.preparo.domain.PreparoPedido;
+import br.com.postech.preparo.domain.exception.PedidoSemIdentificacaoException;
 import br.com.postech.preparo.domain.exception.PreparoPedidoInexistenteException;
 
 class PreparoPedidoControllerTest {
@@ -81,7 +82,7 @@ class PreparoPedidoControllerTest {
     }
 
     @Test
-    void deveInserirNovoPedido() {
+    void deveInserirNovoPedido() throws PedidoSemIdentificacaoException {
         PreparoPedido preparoPedido = new PreparoPedido();
         preparoPedido.setId(1L);
 

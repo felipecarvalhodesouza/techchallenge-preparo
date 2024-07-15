@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.postech.preparo.application.usecases.PreparoPedidoInteractor;
 import br.com.postech.preparo.domain.PreparoPedido;
+import br.com.postech.preparo.domain.exception.PedidoSemIdentificacaoException;
 import br.com.postech.preparo.domain.exception.PreparoPedidoInexistenteException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,7 +47,7 @@ public class PreparoPedidoController {
 	@Operation(summary = "Incluir o pedido na fila")
 	@PostMapping
 	@ApiResponse(responseCode = "201")
-	public ResponseEntity<PreparoPedido> inserir(@RequestBody PreparoPedido preparoPedido) {
+	public ResponseEntity<PreparoPedido> inserir(@RequestBody PreparoPedido preparoPedido) throws PedidoSemIdentificacaoException {
 		PreparoPedido preparoPedidoInserido = preparoPedidoInteractor.inserir(preparoPedido);
 
 		String uri = ServletUriComponentsBuilder

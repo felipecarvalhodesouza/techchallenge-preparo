@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.postech.preparo.application.gateway.PreparoPedidoGateway;
 import br.com.postech.preparo.domain.PreparoPedido;
+import br.com.postech.preparo.domain.exception.PedidoSemIdentificacaoException;
 import br.com.postech.preparo.domain.exception.PreparoPedidoInexistenteException;
 import br.com.postech.preparo.infraestrutura.persistence.PreparoPedidoEntity;
 import br.com.postech.preparo.infraestrutura.persistence.PreparoPedidoRepository;
@@ -31,7 +32,11 @@ public class PreparoPedidoRepositoryGateway implements PreparoPedidoGateway{
 	}
 
 	@Override
-	public PreparoPedido inserir(PreparoPedido filaPedido) {
+	public PreparoPedido inserir(PreparoPedido filaPedido) throws PedidoSemIdentificacaoException {
+		if(filaPedido.getId() == null || filaPedido.getId() == 0) {
+			throw new PedidoSemIdentificacaoException();
+		}
+		
 		PreparoPedidoEntity entity = filaPedidoRepository.save(mapper.toEntity(filaPedido));
 		return mapper.toDomainObject(entity);
 	}

@@ -1,6 +1,7 @@
 package br.com.postech.preparo.infraestrutura.gateway;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.com.postech.preparo.domain.PreparoPedido;
 import br.com.postech.preparo.domain.enumaration.StatusPreparo;
+import br.com.postech.preparo.domain.exception.PedidoSemIdentificacaoException;
 import br.com.postech.preparo.domain.exception.PreparoPedidoInexistenteException;
 import br.com.postech.preparo.infraestrutura.persistence.PreparoPedidoEntity;
 import br.com.postech.preparo.infraestrutura.persistence.PreparoPedidoRepository;
@@ -77,8 +79,9 @@ public class PreparoPedidoRepositoryGatewayTest {
     }
 
     @Test
-    void deveInserirPreparoPedido() {
+    void deveInserirPreparoPedido() throws PedidoSemIdentificacaoException {
         PreparoPedido preparoPedido = new PreparoPedido();
+        preparoPedido.setId(1l);
         preparoPedido.setStatus(StatusPreparo.RECEBIDO);
 
         PreparoPedidoEntity entity = new PreparoPedidoEntity();
@@ -98,6 +101,22 @@ public class PreparoPedidoRepositoryGatewayTest {
         verify(mapper).toEntity(preparoPedido);
         verify(filaPedidoRepository).save(entity);
         verify(mapper).toDomainObject(entity);
+    }
+    
+    @Test
+    void deveGerarExceptionQuandoPedidoSemId() throws PedidoSemIdentificacaoException {
+        PreparoPedido preparoPedido = new PreparoPedido();
+        preparoPedido.setStatus(StatusPreparo.RECEBIDO);
+
+        PreparoPedidoEntity entity = new PreparoPedidoEntity();
+        entity.setId(1L);
+        entity.setStatus(StatusPreparo.RECEBIDO);
+
+        when(mapper.toEntity(preparoPedido)).thenReturn(entity);
+        when(filaPedidoRepository.save(entity)).thenReturn(entity);
+        when(mapper.toDomainObject(entity)).thenReturn(preparoPedido);
+
+        assertThrows(PedidoSemIdentificacaoException.class, () -> preparoPedidoGateway.inserir(preparoPedido));
     }
 
     @Test

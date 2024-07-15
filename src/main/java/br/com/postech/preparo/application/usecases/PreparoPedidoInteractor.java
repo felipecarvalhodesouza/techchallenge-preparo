@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.postech.preparo.application.gateway.PreparoPedidoGateway;
 import br.com.postech.preparo.domain.PreparoPedido;
 import br.com.postech.preparo.domain.enumaration.StatusPreparo;
+import br.com.postech.preparo.domain.exception.PedidoSemIdentificacaoException;
 import br.com.postech.preparo.domain.exception.PreparoPedidoInexistenteException;
 
 public class PreparoPedidoInteractor {
@@ -38,7 +39,7 @@ public class PreparoPedidoInteractor {
 		
 	}
 
-	public PreparoPedido inserir(PreparoPedido pagamento) {
+	public PreparoPedido inserir(PreparoPedido pagamento) throws PedidoSemIdentificacaoException {
 		return preparoPedidoGateway.inserir(pagamento);
 	}
 }

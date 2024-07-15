@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import br.com.postech.preparo.application.gateway.PreparoPedidoGateway;
 import br.com.postech.preparo.domain.PreparoPedido;
 import br.com.postech.preparo.domain.enumaration.StatusPreparo;
+import br.com.postech.preparo.domain.exception.PedidoSemIdentificacaoException;
 import br.com.postech.preparo.domain.exception.PreparoPedidoInexistenteException;
 
 class PreparoPedidoInteractorTest {
@@ -87,7 +88,7 @@ class PreparoPedidoInteractorTest {
     }
 
     @Test
-    void deveInserirNovoPedido() {
+    void deveInserirNovoPedido() throws PedidoSemIdentificacaoException {
         PreparoPedido preparoPedido = new PreparoPedido();
         preparoPedido.setId(1L);
 
