@@ -54,3 +54,7 @@ spec:
               configMapKeyRef:
                 name: mysql-db-preparo-config
                 key: DATABASE_PASSWORD
+          - name: RABBITMQ_URL
+            value: "${RABBITMQ_URL}"
+          - name: RABBITMQ_PORT
+            value: "${RABBITMQ_PORT}"
