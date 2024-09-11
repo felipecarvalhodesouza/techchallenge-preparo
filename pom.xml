@@ -102,7 +102,17 @@
 			</exclusions>
 			<scope>test</scope>
 		</dependency>
+	    <!-- RabbitMQ Java Client -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-amqp</artifactId>
+	    </dependency>
 
+	    <dependency>
+	    	<groupId>br.com.postech</groupId>
+	    	<artifactId>techchallenge-pagamento</artifactId>
+	    	<version>1.0.0-SNAPSHOT</version>
+	    </dependency>
 	</dependencies>
 
 	<profiles>
